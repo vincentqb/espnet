@@ -3,6 +3,7 @@
 """Transducer loss module."""
 
 import torch
+import torchaudio
 
 
 class TransLoss(torch.nn.Module):
@@ -74,6 +75,11 @@ class TransLoss(torch.nn.Module):
             )
         else:
             loss = self.trans_loss(pred_pad, target, pred_len, target_len)
-        loss = loss.to(dtype=dtype)
 
+        loss1 = loss.item()
+        loss = torchaudio.prototype.transducer.rnnt_loss(pred_pad, target, pred_len, target_len, blank=self.blank_id, reduction="mean")
+        loss2 = loss.item()
+        print("--> diff", abs(loss1 - loss2), "loss1", loss1, "loss2", loss2)
+
+        loss = loss.to(dtype=dtype)
         return loss
