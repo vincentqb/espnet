@@ -23,6 +23,10 @@ class TransLoss(torch.nn.Module):
             from warprnnt_pytorch import RNNTLoss
 
             self.trans_loss = RNNTLoss(blank=blank_id)
+        elif trans_type == "torchaudio":
+            from torchaudio.prototype.transducer import RNNTLoss
+
+            self.trans_loss = RNNTLoss(blank=blank_id)
         elif trans_type == "warp-rnnt":
             if device.type == "cuda":
                 try:
